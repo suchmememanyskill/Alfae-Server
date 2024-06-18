@@ -2,7 +2,6 @@ import pc, emu, extras, utils, time
 from flask import Flask, request, send_from_directory, send_file, render_template
 
 app = Flask(__name__)
-app.debug = True
 CONTENT_CACHE = {}
 
 def create_content():
