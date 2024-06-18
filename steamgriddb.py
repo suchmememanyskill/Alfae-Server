@@ -27,6 +27,10 @@ def __download_steamgriddb_img(sgdb_id : str, game_id : str, func, allowed_dimen
         return False
 
 def get_game_name(filename : str) -> str|None:
+    if SGDB is None:
+        utils.warn("get_game_name(): No SteamGridDB API key provided")
+        return None
+
     ext = filename.split(".")[-1]
     results = SGDB.search_game(filename[:-(len(ext) + 1)])
     if results != None and len(results) > 0:
@@ -36,7 +40,7 @@ def get_game_name(filename : str) -> str|None:
 
 def load_img_for_game(game_name : str, game_id : str) -> dict:
     if SGDB is None:
-        utils.warn("No SteamGridDB API key provided")
+        utils.warn("load_img_for_game(): No SteamGridDB API key provided")
         return {}
 
     local_path = os.path.join(IMG_DIR, game_id)
