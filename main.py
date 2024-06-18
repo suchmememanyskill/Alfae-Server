@@ -33,7 +33,6 @@ def fetch_game_data():
         content.extend(CONTENT_CACHE["emu"])
         content.extend(CONTENT_CACHE["pc"])
         content.sort(key=lambda x: x["game_name"].lower())
-        print(content)
         return render_template("template.html", games=content, extras=CONTENT_CACHE["extras"])
 
     return CONTENT_CACHE

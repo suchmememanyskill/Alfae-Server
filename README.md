@@ -156,4 +156,37 @@ Extras are loose files without any organisation.
 ```
 
 ## Docker Compose
-TODO
+
+```yaml
+version: "3.8"
+services:
+  file-server:
+    image: joseluisq/static-web-server:latest
+    restart: unless-stopped
+    environment:
+      - SERVER_ROOT=/data
+      - SERVER_HTTPS_REDIRECT_HOST=${BASE_URL}
+    volumes:
+      - /path/to/data:/data:ro
+    ports:
+      - 2035:80
+  indexer:
+    stop_grace_period: 2s
+    image: ghcr.io/suchmememanyskill/alfae-server:latest
+    restart: unless-stopped
+    volumes:
+      - /path/to/data:/data
+    environment:
+      - EMU_ENABLED=true
+      - PC_ENABLED=true
+      - EXTRAS_ENABLED=true
+      - PC_DIR=/data/pc
+      - EMU_DIR=/data/emu
+      - EXTRA_DIR=/data/extra
+      - BASE_URL=${PROTOCOL}://${BASE_URL}
+      - IMG_DIR=/data/img
+      - STEAMGRIDDB_API_KEY=${STEAMGRIDDB_API_KEY}
+    ports:
+      - 2036:5000
+networks: {}
+```
