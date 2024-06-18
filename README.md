@@ -179,7 +179,7 @@ services:
     environment:
       - EMU_ENABLED=true
       - PC_ENABLED=true
-      - EXTRAS_ENABLED=true
+      - EXTRA_ENABLED=true
       - PC_DIR=/data/pc
       - EMU_DIR=/data/emu
       - EXTRA_DIR=/data/extra
