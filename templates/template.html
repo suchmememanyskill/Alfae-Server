@@ -34,6 +34,13 @@
             height: calc(100vh - 16px);
             margin: 0;
             padding: 8px;
+            overflow: hidden;
+        }
+
+        .body-container {
+            overflow-y: scroll;
+            width: 100%;
+            height: 100%;
         }
 
         .game {
@@ -199,65 +206,67 @@
 </head>
 
 <body>
-    <section>
-        <header>
-            <h1>Games</h1>
-            <input type="text" id="search" placeholder="Search..." oninput="searchOnChange()">
-        </header>
-
-        <section class="game-list">
-            {% for game in games %}
-            <article class="game" game_name="{{ game.game_name }}" game_platform="{{ game.platform }}">
-                <img src="{{ game.img.verticalcover }}" height="300" width="200" onclick="keepActive(event)" />
-                <div class="below">
-                    <p>{{ game.game_name }}</p>
-                    <p>{{ game.total_size }} | {{ game.platform }}</p>
-                </div>
-                <div class="hover">
-                    <div class="game-button-row">
-                        {% if 'verticalcover' in game.img %}
-                        <a href="{{game.img.verticalcover}}">VC</a>
-                        {% endif %}
-                        {% if 'horizontalcover' in game.img %}
-                        <a href="{{game.img.horizontalcover}}">HC</a>
-                        {% endif %}
-                        {% if 'icon' in game.img %}
-                        <a href="{{game.img.icon}}">ICO</a>
-                        {% endif %}
-                        {% if 'logo' in game.img %}
-                        <a href="{{game.img.logo}}">LOGO</a>
-                        {% endif %}
-                        {% if 'background' in game.img %}
-                        <a href="{{game.img.background}}">BG</a>
-                        {% endif %}
+    <div class="body-container">
+        <section>
+            <header>
+                <h1>Games</h1>
+                <input type="text" id="search" placeholder="Search..." oninput="searchOnChange()">
+            </header>
+    
+            <section class="game-list">
+                {% for game in games %}
+                <article class="game" game_name="{{ game.game_name }}" game_platform="{{ game.platform }}">
+                    <img src="{{ game.img.verticalcover }}" height="300" width="200" onclick="keepActive(event)" />
+                    <div class="below">
+                        <p>{{ game.game_name }}</p>
+                        <p>{{ game.total_size }} | {{ game.platform }}</p>
                     </div>
-                    {% for download in game.files %}
-                    <a href="{{ download.url }}" class="game-download" download_name="{{ download.name }}">
-                        <p>{{ download.name }}</p>
-                        <p>{{ download.type }} | {{ download.game_size | readable }} | {{ download.version }}</p>
-                    </a>
-                    {% endfor %}
-                </div>
-            </article>
-            {% endfor %}
-        </section>
-
-    </section>
-    <section>
-        <header>
-            <h1>Extras</h1>
-        </header>
-        <section class="extras-list">
-            {% for extra in extras %}
-            <h2 class="extra-header">{{ extra.game_name }}</h2>
-            <article class="extra">
-                {% for download in extra.files %}
-                <a href="{{ download.url }}" class="extra-download">{{ download.name }} ({{ download.download_size | readable}})</a>
+                    <div class="hover">
+                        <div class="game-button-row">
+                            {% if 'verticalcover' in game.img %}
+                            <a href="{{game.img.verticalcover}}">VC</a>
+                            {% endif %}
+                            {% if 'horizontalcover' in game.img %}
+                            <a href="{{game.img.horizontalcover}}">HC</a>
+                            {% endif %}
+                            {% if 'icon' in game.img %}
+                            <a href="{{game.img.icon}}">ICO</a>
+                            {% endif %}
+                            {% if 'logo' in game.img %}
+                            <a href="{{game.img.logo}}">LOGO</a>
+                            {% endif %}
+                            {% if 'background' in game.img %}
+                            <a href="{{game.img.background}}">BG</a>
+                            {% endif %}
+                        </div>
+                        {% for download in game.files %}
+                        <a href="{{ download.url }}" class="game-download" download_name="{{ download.name }}">
+                            <p>{{ download.name }}</p>
+                            <p>{{ download.type }} | {{ download.game_size | readable }} | {{ download.version }}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </article>
                 {% endfor %}
-            </article>
-            {% endfor %}
+            </section>
+    
         </section>
-    </section>
+        <section>
+            <header>
+                <h1>Extras</h1>
+            </header>
+            <section class="extras-list">
+                {% for extra in extras %}
+                <h2 class="extra-header">{{ extra.game_name }}</h2>
+                <article class="extra">
+                    {% for download in extra.files %}
+                    <a href="{{ download.url }}" class="extra-download">{{ download.name }} ({{ download.download_size | readable}})</a>
+                    {% endfor %}
+                </article>
+                {% endfor %}
+            </section>
+        </section>
+    </div>
 </body>
 
 </html>
