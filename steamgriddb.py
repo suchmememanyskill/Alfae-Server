@@ -1,7 +1,7 @@
 import steamgrid, os, requests, utils
 
 STEAMGRIDDB_API_KEY = os.getenv("STEAMGRIDDB_API_KEY", "")
-IMG_DIR = os.getenv("IMG_DIR", "./images")
+IMG_DIR = os.getenv("IMG_DIR", "./img")
 IMG_FILES = ["verticalcover", "background", "horizontalcover", "logo", "icon"]
 
 SGDB = None
