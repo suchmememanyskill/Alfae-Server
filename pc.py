@@ -39,6 +39,7 @@ class PcGame:
                 }
             ],
             "platform": "Pc",
+            "total_size": utils.convert_size(self.game_size),
 
             # Should be removed in a later version
             "download_size": self.download_size,

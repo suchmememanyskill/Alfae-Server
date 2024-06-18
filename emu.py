@@ -138,6 +138,7 @@ class EmuGame:
             "img": self.img,
             "files": [x.to_dict() for x in self.files],
             "platform": self.emu,
+            "total_size": utils.convert_size(sum([x.download_size for x in self.files])),
 
             # Should be removed in a later version
             "emu": self.emu,

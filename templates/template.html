@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        :root {
+            --game-height: 300px;
+            --game-width: 200px;
+            --game-name-box-height: 50px;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+                background-size: 300% 300%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+                background-size: 300% 300%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+                background-size: 300% 300%;
+            }
+        }
+
+        body {
+            background-color: rgba(0, 0, 0, 0);
+            background-image: linear-gradient(45deg, rgba(6, 0, 204, 0.2), rgba(153, 115, 0, 0.2));
+            animation: gradient 20s ease infinite forwards !important;
+            width: calc(100vw - 16px);
+            height: calc(100vh - 16px);
+            margin: 0;
+            padding: 8px;
+        }
+
+        .game {
+            position: relative;
+            height: var(--game-height);
+            width: 200px;
+            overflow: hidden;
+        }
+
+        .game>* {
+            position: absolute;
+            width: 100%;
+        }
+
+        .game .below,
+        .game .hover {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        .game:hover .below,
+        .game:hover .hover,
+        .game.active .below,
+        .game.active .hover {
+            background: rgba(0, 0, 0, 0.75);
+        }
+
+        .game .below {
+            bottom: 0;
+            text-align: center;
+            height: 50px;
+            transition: margin 0.6s, background 0.6s;
+        }
+
+        .game .below p {
+            margin: 5px 0;
+        }
+
+        .game .hover {
+            bottom: 0;
+            height: 0;
+            transition: height 0.6s, background 0.6s;
+            overflow-y: scroll;
+        }
+
+        .game:hover .hover,
+        .game.active .hover {
+            height: calc(var(--game-height) - var(--game-name-box-height));
+        }
+
+        .game:hover .below,
+        .game.active .below {
+            margin-bottom: calc(var(--game-height) - var(--game-name-box-height));
+        }
+
+        .game-button-row {
+            justify-content: center;
+            display: flex;
+            gap: 5px;
+        }
+
+        .game-button-row a {
+            color: white;
+        }
+
+        .game-download {
+            margin-left: 2px;
+            border-left: 2px solid white;
+            padding-left: 6px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .game-download p:first-child {
+            word-wrap: anywhere;
+        }
+
+        .game-download p:not(:first-child) {
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+
+        .game-download p {
+            margin: 2px 0;
+            color: white;
+        }
+
+        .game .hover>* {
+            margin-bottom: 8px;
+        }
+
+        .game-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        header > * {
+            height: 20px;
+            margin: 0;
+            color: black;
+        }
+        
+        .extra {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin: 3px;
+            padding: 10px 20px;
+        }
+
+        .extra-download {
+            color: black;
+        }
+
+        .extra-header {
+            margin: 6px 10px;
+            text-align: left;
+        }
+
+        .extra a {
+            display: block;
+            margin: 5px 0;
+        }
+        
+    </style>
+    <script>
+        function keepActive(event) {
+            console.log(event)
+            clicked_image = event.target;
+            Array.from(document.getElementsByClassName('active')).forEach(parentNode => parentNode.classList.remove('active'));
+            clicked_image.parentNode.classList.add('active');
+        }
+
+        function searchOnChange() {
+            let search = document.getElementById("search").value;
+            let games = document.getElementsByClassName("game");
+            for (let i = 0; i < games.length; i++) {
+                let game = games[i];
+                let game_name = game.getAttribute("game_name");
+                let game_platform = game.getAttribute("game_platform");
+                let game_dls = Array.from(game.getElementsByClassName("game-download"))
+                let game_downloads = game_dls.map(dl => dl.getAttribute("download_name"));
+                if (game_name.toLowerCase().includes(search.toLowerCase()) || game_platform.toLowerCase().includes(search.toLowerCase()) || game_downloads.some(dl => dl.toLowerCase().includes(search.toLowerCase()))) {
+                    game.classList.remove("hidden");
+                } else {
+                    game.classList.add("hidden");
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <section>
+        <header>
+            <h1>Games</h1>
+            <input type="text" id="search" placeholder="Search..." oninput="searchOnChange()">
+        </header>
+
+        <section class="game-list">
+            {% for game in games %}
+            <article class="game" game_name="{{ game.game_name }}" game_platform="{{ game.platform }}">
+                <img src="{{ game.img.verticalcover }}" height="300" width="200" onclick="keepActive(event)" />
+                <div class="below">
+                    <p>{{ game.game_name }}</p>
+                    <p>{{ game.total_size }} | {{ game.platform }}</p>
+                </div>
+                <div class="hover">
+                    <div class="game-button-row">
+                        {% if 'verticalcover' in game.img %}
+                        <a href="{{game.img.verticalcover}}">VC</a>
+                        {% endif %}
+                        {% if 'horizontalcover' in game.img %}
+                        <a href="{{game.img.horizontalcover}}">HC</a>
+                        {% endif %}
+                        {% if 'icon' in game.img %}
+                        <a href="{{game.img.icon}}">ICO</a>
+                        {% endif %}
+                        {% if 'logo' in game.img %}
+                        <a href="{{game.img.logo}}">LOGO</a>
+                        {% endif %}
+                        {% if 'background' in game.img %}
+                        <a href="{{game.img.background}}">BG</a>
+                        {% endif %}
+                    </div>
+                    {% for download in game.files %}
+                    <a href="{{ download.url }}" class="game-download" download_name="{{ download.name }}">
+                        <p>{{ download.name }}</p>
+                        <p>{{ download.type }} | {{ download.game_size | readable }} | {{ download.version }}</p>
+                    </a>
+                    {% endfor %}
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+
+    </section>
+    <section>
+        <header>
+            <h1>Extras</h1>
+        </header>
+        <section class="extras-list">
+            {% for extra in extras %}
+            <h2 class="extra-header">{{ extra.game_name }}</h2>
+            <article class="extra">
+                {% for download in extra.files %}
+                <a href="{{ download.url }}" class="extra-download">{{ download.name }} ({{ download.download_size | readable}})</a>
+                {% endfor %}
+            </article>
+            {% endfor %}
+        </section>
+    </section>
+</body>
+
+</html>
