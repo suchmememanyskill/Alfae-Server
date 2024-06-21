@@ -44,7 +44,7 @@ To simplify documentation, when [] is used, you can also use () or {}.
 
 - To organise updates, include [UPD] in the filename. 
 - To organise dlc, include [DLC-TAG], [DLC_TAG], [DLC|TAG], [DLC=TAG]. TAG is used to name the dlc (Example: [DLC_CONTENT_PACK_1])
-- To organise extras, include [EXTRA-TAG], [EXTRA_TAG], [EXTRA|TAG], [EXTRA=TAG]. TAG is used to name the dlc (Example: [DLC_CHEAT_1]) 
+- To organise extras, include [EXTRA-TAG], [EXTRA_TAG], [EXTRA|TAG], [EXTRA=TAG]. TAG is used to name the extra content (Example: [EXTRA_CHEAT_1]) 
 
 #### Pc
 ./pc is the base folder in this example. This is configurable via an environment variable.
@@ -90,39 +90,40 @@ Extras are loose files without any organisation.
                 {
                     "download_size": 1459978240,
                     "ext": "iso",
-                    "game_size": 1459978240,
+                    "installed_size": 1459978240,
                     "name": "super_smash_bros_melee_base_USA.iso",
                     "type": "base",
                     "url": "localhost:5000/emu/Gamecube/super_smash_bros_melee/Super%20Smash%20Bros.%20Melee%20%28USA%29%20%28En%2CJa%29%20%28v1.02%29.iso",
                     "version": "USA"
                 }
             ],
-            "game_id": "super_smash_bros_melee",
-            "game_name": "Super Smash Bros. Melee",
-            "img": {
+            "id": "super_smash_bros_melee",
+            "name": "Super Smash Bros. Melee",
+            "images": {
                 "background": "localhost:5000/img/super_smash_bros_melee/background.png",
                 "horizontalcover": "localhost:5000/img/super_smash_bros_melee/horizontalcover.png",
                 "icon": "localhost:5000/img/super_smash_bros_melee/icon.png",
                 "logo": "localhost:5000/img/super_smash_bros_melee/logo.png",
                 "verticalcover": "localhost:5000/img/super_smash_bros_melee/verticalcover.png"
             },
-            "platform": "Gamecube"
+            "platform": "Gamecube",
+            "size":	"1.36 GB"
         },
         {
             "files": [
                 {
                     "download_size": 223438613,
                     "ext": "zip",
-                    "game_size": 323443297,
+                    "installed_size": 323443297,
                     "name": "ashorthike.zip",
                     "type": "base",
                     "url": "localhost:5000/pc/ashorthike.zip",
                     "version": "unk"
                 }
             ],
-            "game_id": "a_short_hike",
-            "game_name": "A Short Hike",
-            "img": {
+            "id": "a_short_hike",
+            "name": "A Short Hike",
+            "image": {
                 "background": "localhost:5000/img/a_short_hike/background.jpg",
                 "horizontalcover": "localhost:5000/img/a_short_hike/horizontalcover.jpg",
                 "icon": "localhost:5000/img/a_short_hike/icon.png",
@@ -130,6 +131,7 @@ Extras are loose files without any organisation.
                 "verticalcover": "localhost:5000/img/a_short_hike/verticalcover.png"
             },
             "platform": "Pc",
+            "size":	"308.46 MB"
         }
     ],
     "extras": [
@@ -138,16 +140,17 @@ Extras are loose files without any organisation.
                 {
                     "download_size": 8,
                     "ext": "txt",
-                    "game_size": 8,
+                    "installed_size": 8,
                     "name": "My Mega Cheats Collection.txt",
                     "type": "extra",
                     "url": "localhost:5000/extra/loose_pc/My%20Mega%20Cheats%20Collection.txt",
                     "version": "unk"
                 }
             ],
-            "game_id": "loosepc",
-            "game_name": "loose_pc",
-            "platform": "Extra"
+            "id": "loosepc",
+            "name": "loose_pc",
+            "platform": "Extra",
+            "size": "8.0 B"
         }
     ]
 }
