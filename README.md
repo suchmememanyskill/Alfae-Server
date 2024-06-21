@@ -84,7 +84,7 @@ Extras are loose files without any organisation.
 
 ```json
 {
-    "emu": [
+    "games": [
         {
             "files": [
                 {
@@ -107,27 +107,7 @@ Extras are loose files without any organisation.
                 "verticalcover": "localhost:5000/img/super_smash_bros_melee/verticalcover.png"
             },
             "platform": "Gamecube"
-        }
-    ],
-    "extras": [
-        {
-            "files": [
-                {
-                    "download_size": 8,
-                    "ext": "txt",
-                    "game_size": 8,
-                    "name": "My Mega Cheats Collection.txt",
-                    "type": "extra",
-                    "url": "localhost:5000/extra/loose_pc/My%20Mega%20Cheats%20Collection.txt",
-                    "version": "unk"
-                }
-            ],
-            "game_id": "loosepc",
-            "game_name": "loose_pc",
-            "platform": "Extra"
-        }
-    ],
-    "pc": [
+        },
         {
             "files": [
                 {
@@ -150,6 +130,24 @@ Extras are loose files without any organisation.
                 "verticalcover": "localhost:5000/img/a_short_hike/verticalcover.png"
             },
             "platform": "Pc",
+        }
+    ],
+    "extras": [
+        {
+            "files": [
+                {
+                    "download_size": 8,
+                    "ext": "txt",
+                    "game_size": 8,
+                    "name": "My Mega Cheats Collection.txt",
+                    "type": "extra",
+                    "url": "localhost:5000/extra/loose_pc/My%20Mega%20Cheats%20Collection.txt",
+                    "version": "unk"
+                }
+            ],
+            "game_id": "loosepc",
+            "game_name": "loose_pc",
+            "platform": "Extra"
         }
     ]
 }
