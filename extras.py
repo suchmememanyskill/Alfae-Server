@@ -19,7 +19,7 @@ class ExtraGameFile:
             "version": "unk",
             "name": self.filename,
             "download_size": self.download_size,
-            "game_size": self.download_size,
+            "installed_size": self.download_size,
             "url": self.url,
         }
         
@@ -30,15 +30,16 @@ class ExtraGame:
         self.path = os.path.join(EXTRA_DIR, foldername)
         self.game_id = utils.squash_name(foldername)
         self.game_name = foldername
-        self.files = [f for f in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, f))]
-        self.files.sort()
-
+        self.files = [ExtraGameFile(self.foldername, f) for f in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, f))]
+        self.files.sort(key=lambda x: x.filename.lower())
+        
     def to_dict(self) -> dict:
         return {
-            "game_id": self.game_id,
-            "game_name": self.game_name,
-            "files": [ExtraGameFile(self.foldername, f).to_dict() for f in self.files],
-            "platform": "Extra"
+            "id": self.game_id,
+            "name": self.game_name,
+            "files": [f.to_dict() for f in self.files],
+            "platform": "Extra",
+            "size": utils.convert_size(sum([x.download_size for x in self.files])),
         }
 
 def load() -> list[ExtraGame]:

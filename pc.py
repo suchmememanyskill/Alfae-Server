@@ -24,9 +24,9 @@ class PcGame:
 
     def to_dict(self) -> dict:
         return {
-            "game_id": self.game_id,
-            "game_name": self.game_name,
-            "img": self.img,
+            "id": self.game_id,
+            "name": self.game_name,
+            "images": self.img,
             "files": [
                 {
                     "type": utils.GAME_BASE,
@@ -34,18 +34,12 @@ class PcGame:
                     "version": self.version,
                     "name": self.filename,
                     "download_size": self.download_size,
-                    "game_size": self.game_size,
+                    "installed_size": self.game_size,
                     "url": self.url,
                 }
             ],
             "platform": "Pc",
-            "total_size": utils.convert_size(self.game_size),
-
-            # Should be removed in a later version
-            "download_size": self.download_size,
-            "game_size": self.game_size,
-            "version": self.version,
-            "url": self.url,
+            "size": utils.convert_size(self.game_size),
         }
         
 def load() -> list[PcGame]:

@@ -219,34 +219,34 @@
     
             <section class="game-list">
                 {% for game in games %}
-                <article class="game" game_name="{{ game.game_name }}" game_platform="{{ game.platform }}">
-                    <img src="{{ game.img.verticalcover }}" height="300" width="200" onclick="keepActive(event)" />
+                <article class="game" game_name="{{ game.name }}" game_platform="{{ game.platform }}">
+                    <img src="{{ game.images.verticalcover }}" height="300" width="200" onclick="keepActive(event)" />
                     <div class="below">
-                        <p>{{ game.game_name }}</p>
-                        <p>{{ game.total_size }} | {{ game.platform }}</p>
+                        <p>{{ game.name }}</p>
+                        <p>{{ game.size }} | {{ game.platform }}</p>
                     </div>
                     <div class="hover">
                         <div class="game-button-row">
-                            {% if 'verticalcover' in game.img %}
-                            <a href="{{game.img.verticalcover}}">VC</a>
+                            {% if 'verticalcover' in game.images %}
+                            <a href="{{game.images.verticalcover}}">VC</a>
                             {% endif %}
-                            {% if 'horizontalcover' in game.img %}
-                            <a href="{{game.img.horizontalcover}}">HC</a>
+                            {% if 'horizontalcover' in game.images %}
+                            <a href="{{game.images.horizontalcover}}">HC</a>
                             {% endif %}
-                            {% if 'icon' in game.img %}
-                            <a href="{{game.img.icon}}">ICO</a>
+                            {% if 'icon' in game.images %}
+                            <a href="{{game.images.icon}}">ICO</a>
                             {% endif %}
-                            {% if 'logo' in game.img %}
-                            <a href="{{game.img.logo}}">LOGO</a>
+                            {% if 'logo' in game.images %}
+                            <a href="{{game.images.logo}}">LOGO</a>
                             {% endif %}
-                            {% if 'background' in game.img %}
-                            <a href="{{game.img.background}}">BG</a>
+                            {% if 'background' in game.images %}
+                            <a href="{{game.images.background}}">BG</a>
                             {% endif %}
                         </div>
                         {% for download in game.files %}
                         <a href="{{ download.url }}" class="game-download" download_name="{{ download.name }}">
                             <p>{{ download.name }}</p>
-                            <p>{{ download.type }} | {{ download.game_size | readable }} | {{ download.version }}</p>
+                            <p>{{ download.type }} | {{ download.installed_size | readable }} | {{ download.version }}</p>
                         </a>
                         {% endfor %}
                     </div>
@@ -261,7 +261,7 @@
             </header>
             <section class="extras-list">
                 {% for extra in extras %}
-                <h2 class="extra-header">{{ extra.game_name }}</h2>
+                <h2 class="extra-header">{{ extra.name }}</h2>
                 <article class="extra">
                     {% for download in extra.files %}
                     <a href="{{ download.url }}" class="extra-download">{{ download.name }} ({{ download.download_size | readable}})</a>

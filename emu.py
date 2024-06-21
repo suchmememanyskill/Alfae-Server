@@ -62,7 +62,7 @@ class EmuGameFile:
             "version": self.version,
             "name": self.name,
             "download_size": self.download_size,
-            "game_size": self.download_size,
+            "installed_size": self.download_size,
             "url": self.url
         }
 
@@ -133,15 +133,12 @@ class EmuGame:
 
     def to_dict(self) -> dict:
         return {
-            "game_id": self.game_id,
-            "game_name": self.game_name,
-            "img": self.img,
+            "id": self.game_id,
+            "name": self.game_name,
+            "images": self.img,
             "files": [x.to_dict() for x in self.files],
             "platform": self.emu,
-            "total_size": utils.convert_size(sum([x.download_size for x in self.files])),
-
-            # Should be removed in a later version
-            "emu": self.emu,
+            "size": utils.convert_size(sum([x.download_size for x in self.files])),
         }
 
 def __search(emuGames : list[EmuGame], filename : str) -> EmuGame:

@@ -15,7 +15,7 @@ def create_content():
     extra_entries = [x.to_dict() for x in extras.load()]
 
     game_entries = pc_entries + emu_entries
-    game_entries.sort(key=lambda x: x["game_name"].lower())
+    game_entries.sort(key=lambda x: x["name"].lower())
 
     CONTENT_CACHE = {
         "games": game_entries,
