@@ -10,9 +10,9 @@ def create_content():
     utils.info("Loading content...")
     start = time.time()
 
-    pc_entries = pc.load()
-    emu_entries = emu.load()
-    extra_entries = extras.load()
+    pc_entries = [x.to_dict() for x in pc.load()]
+    emu_entries = [x.to_dict() for x in emu.load()]
+    extra_entries = [x.to_dict() for x in extras.load()]
 
     game_entries = pc_entries + emu_entries
     game_entries.sort(key=lambda x: x["game_name"].lower())
