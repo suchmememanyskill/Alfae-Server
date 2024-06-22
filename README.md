@@ -80,6 +80,52 @@ Extras are loose files without any organisation.
         - loosefile2
 ```
 
+## Generated URL's
+
+This server only provides an index to download files. A file server should be hosted seperately. The URL's by the indexer are generated as follows: 
+
+Emulation: BASE_URL + /emu/ + PLATFORM + / + GAME_ID + / + FILENAME
+Pc: BASE_URL + /pc/ + FILENAME
+Extra: BASE_URL + /extra/ + FOLDERNAME + / + FILENAME
+Image: BASE_URL + /img/ + GAME_ID + / + FILENAME
+
+## Docker Compose
+
+```yaml
+version: "3.8"
+services:
+  file-server:
+    image: joseluisq/static-web-server:latest
+    restart: unless-stopped
+    environment:
+      - SERVER_ROOT=/data
+      - SERVER_HTTPS_REDIRECT_HOST=${BASE_URL}
+    volumes:
+      - /path/to/data:/data:ro
+    ports:
+      - 2035:80
+  indexer:
+    stop_grace_period: 2s
+    image: ghcr.io/suchmememanyskill/alfae-server:latest
+    restart: unless-stopped
+    volumes:
+      - /path/to/data:/data
+    environment:
+      - EMU_ENABLED=true
+      - PC_ENABLED=true
+      - EXTRA_ENABLED=true
+      - PC_DIR=/data/pc
+      - EMU_DIR=/data/emu
+      - EXTRA_DIR=/data/extra
+      - BASE_URL=${PROTOCOL}://${BASE_URL}
+      - IMG_DIR=/data/img
+      - STEAMGRIDDB_API_KEY=${STEAMGRIDDB_API_KEY}
+    ports:
+      - 2036:5000
+networks: {}
+```
+
+
 ## API Format:
 
 ```json
@@ -154,40 +200,4 @@ Extras are loose files without any organisation.
         }
     ]
 }
-```
-
-## Docker Compose
-
-```yaml
-version: "3.8"
-services:
-  file-server:
-    image: joseluisq/static-web-server:latest
-    restart: unless-stopped
-    environment:
-      - SERVER_ROOT=/data
-      - SERVER_HTTPS_REDIRECT_HOST=${BASE_URL}
-    volumes:
-      - /path/to/data:/data:ro
-    ports:
-      - 2035:80
-  indexer:
-    stop_grace_period: 2s
-    image: ghcr.io/suchmememanyskill/alfae-server:latest
-    restart: unless-stopped
-    volumes:
-      - /path/to/data:/data
-    environment:
-      - EMU_ENABLED=true
-      - PC_ENABLED=true
-      - EXTRA_ENABLED=true
-      - PC_DIR=/data/pc
-      - EMU_DIR=/data/emu
-      - EXTRA_DIR=/data/extra
-      - BASE_URL=${PROTOCOL}://${BASE_URL}
-      - IMG_DIR=/data/img
-      - STEAMGRIDDB_API_KEY=${STEAMGRIDDB_API_KEY}
-    ports:
-      - 2036:5000
-networks: {}
 ```
