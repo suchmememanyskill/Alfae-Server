@@ -84,10 +84,12 @@ Extras are loose files without any organisation.
 
 This server only provides an index to download files. A file server should be hosted seperately. The URL's by the indexer are generated as follows: 
 
+```
 Emulation: BASE_URL + /emu/ + PLATFORM + / + GAME_ID + / + FILENAME
 Pc: BASE_URL + /pc/ + FILENAME
 Extra: BASE_URL + /extra/ + FOLDERNAME + / + FILENAME
 Image: BASE_URL + /img/ + GAME_ID + / + FILENAME
+```
 
 ## Docker Compose
 
