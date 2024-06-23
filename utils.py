@@ -32,6 +32,7 @@ if "BASE_URL" not in os.environ:
     exit(1)
 
 BASE_URL = os.environ["BASE_URL"]
+READ_ONLY = os.getenv("READ_ONLY", "false").lower() == "true"
 
 GAME_BASE = "base"
 GAME_UPDATE = "update"

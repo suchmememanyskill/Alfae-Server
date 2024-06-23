@@ -173,74 +173,75 @@ def load() -> list[EmuGame]:
             except Exception as e:
                 utils.error(f"Failed loading emu game {game_id}: {str(e)}")
 
-        files = [f for f in os.listdir(full_path) if os.path.isfile(os.path.join(full_path, f))]
-        update_files = [f for f in files if re.search(r"[\[{(]UPD[\]})]", f) != None]
-        dlc_files = [f for f in files if re.search(r"[\[{(]DLC[-|_=](.*?)[\]})]", f) != None]
-        extra_files = [f for f in files if re.search(r"[\[{(]EXTRA[-|_=](.*?)[\]})]", f) != None]
-        base_files = [f for f in files if f not in update_files and f not in dlc_files and f not in extra_files]
-
-        for base in base_files:
-            try:
-                name = steamgriddb.get_game_name(base)
-                if name != None:
-                    game_id = utils.squash_name(name)
-                else:
-                    game_id = utils.squash_name(base)
-                    name = game_id
-
-                gen = {
-                    "game_name": name,
-                    "files": [{
-                        "file_name": base,
-                        "type": utils.GAME_BASE
-                    }]
-                }
-
-                new_dir = os.path.join(full_path, game_id)
-                os.mkdir(new_dir)
-                os.rename(os.path.join(full_path, base), os.path.join(new_dir, base))
-
-                with open(os.path.join(new_dir, "emu.json"), 'w') as emu_file:
-                    json.dump(gen, emu_file)
+        if not utils.READ_ONLY:
+            files = [f for f in os.listdir(full_path) if os.path.isfile(os.path.join(full_path, f))]
+            update_files = [f for f in files if re.search(r"[\[{(]UPD[\]})]", f) != None]
+            dlc_files = [f for f in files if re.search(r"[\[{(]DLC[-|_=](.*?)[\]})]", f) != None]
+            extra_files = [f for f in files if re.search(r"[\[{(]EXTRA[-|_=](.*?)[\]})]", f) != None]
+            base_files = [f for f in files if f not in update_files and f not in dlc_files and f not in extra_files]
+    
+            for base in base_files:
+                try:
+                    name = steamgriddb.get_game_name(base)
+                    if name != None:
+                        game_id = utils.squash_name(name)
+                    else:
+                        game_id = utils.squash_name(base)
+                        name = game_id
+    
+                    gen = {
+                        "game_name": name,
+                        "files": [{
+                            "file_name": base,
+                            "type": utils.GAME_BASE
+                        }]
+                    }
+    
+                    new_dir = os.path.join(full_path, game_id)
+                    os.mkdir(new_dir)
+                    os.rename(os.path.join(full_path, base), os.path.join(new_dir, base))
+    
+                    with open(os.path.join(new_dir, "emu.json"), 'w') as emu_file:
+                        json.dump(gen, emu_file)
+                    
+                    emu_games.append(EmuGame(emu, game_id))
+                except Exception as e:
+                    utils.error(f"Failed generating emu base entry {base}: {str(e)}")
+    
+            for update in update_files:
+                try:
+                    search = __search(emu_games, update)
+                    if search == None:
+                        utils.warn(f"Could not find base game for update {update}")
+                        continue
+                    
+                    search.add_update(update)
+                except Exception as e:
+                    utils.error(f"Failed generating emu update entry {update}: {str(e)}")
                 
-                emu_games.append(EmuGame(emu, game_id))
-            except Exception as e:
-                utils.error(f"Failed generating emu base entry {base}: {str(e)}")
-
-        for update in update_files:
-            try:
-                search = __search(emu_games, update)
-                if search == None:
-                    utils.warn(f"Could not find base game for update {update}")
-                    continue
-
-                search.add_update(update)
-            except Exception as e:
-                utils.error(f"Failed generating emu update entry {update}: {str(e)}")
+            for dlc in dlc_files:
+                try:
+                    search = __search(emu_games, dlc)
+                    if search == None:
+                        utils.warn(f"Could not find base game for dlc {dlc}")
+                        continue
+                    
+                    dlc_name = re.findall(r"[\[{(]DLC[-|_=](.*?)[\]})]", dlc)[0]
+                    search.add_dlc(dlc, dlc_name)
+                except Exception as e:
+                    utils.error(f"Failed generating emu dlc entry {dlc}: {str(e)}")
             
-        for dlc in dlc_files:
-            try:
-                search = __search(emu_games, dlc)
-                if search == None:
-                    utils.warn(f"Could not find base game for dlc {dlc}")
-                    continue
-
-                dlc_name = re.findall(r"[\[{(]DLC[-|_=](.*?)[\]})]", dlc)[0]
-                search.add_dlc(dlc, dlc_name)
-            except Exception as e:
-                utils.error(f"Failed generating emu dlc entry {dlc}: {str(e)}")
-        
-        for extra in extra_files:
-            try:
-                search = __search(emu_games, extra)
-                if search == None:
-                    utils.warn(f"Could not find base game for extra {extra}")
-                    continue
-
-                extra_name = re.findall(r"[\[{(]EXTRA[-|_=](.*?)[\]})]", extra)[0]
-                search.add_extra(extra, extra_name)
-            except Exception as e:
-                utils.error(f"Failed generating emu extra entry {extra}: {str(e)}")
+            for extra in extra_files:
+                try:
+                    search = __search(emu_games, extra)
+                    if search == None:
+                        utils.warn(f"Could not find base game for extra {extra}")
+                        continue
+                    
+                    extra_name = re.findall(r"[\[{(]EXTRA[-|_=](.*?)[\]})]", extra)[0]
+                    search.add_extra(extra, extra_name)
+                except Exception as e:
+                    utils.error(f"Failed generating emu extra entry {extra}: {str(e)}")
     
     utils.info(f"Loaded {len(emu_games)} emu games")
     return emu_games

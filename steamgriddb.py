@@ -39,12 +39,16 @@ def get_game_name(filename : str) -> str|None:
     return None
 
 def load_img_for_game(game_name : str, game_id : str) -> dict:
-    if SGDB is None:
-        utils.warn("load_img_for_game(): No SteamGridDB API key provided")
-        return {}
-
     local_path = os.path.join(IMG_DIR, game_id)
     if not os.path.exists(local_path):
+        if SGDB is None:
+            utils.warn("load_img_for_game(): No SteamGridDB API key provided")
+            return {}
+        
+        if utils.READ_ONLY:
+            utils.warn("load_img_for_game(): READ_ONLY mode is enabled and images are missing")
+            return {}
+
         try:
             utils.info(f"Downloading images for game '{game_id}'")
             entries = SGDB.search_game(game_name)
