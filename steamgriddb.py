@@ -14,7 +14,7 @@ def __download_steamgriddb_img(sgdb_id : str, game_id : str, func, allowed_dimen
         result = func([sgdb_id])
         for x in result:
             if (len(allowed_dimensions) <= 0 or (x.width, x.height) in allowed_dimensions) and (x.mime == "image/jpeg" or x.mime == "image/png"):
-                img_data = requests.get(x.url).content
+                img_data = requests.get(x.url, timeout=20).content
 
                 with open(os.path.join(IMG_DIR, game_id, f"{img_type}.{'png' if x.mime == 'image/png' else 'jpg'}"), 'wb') as img_file:
                     img_file.write(img_data)
