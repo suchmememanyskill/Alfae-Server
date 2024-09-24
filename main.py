@@ -39,4 +39,9 @@ def fetch_game_data():
 
     return CONTENT_CACHE
 
+@app.route("/reload/")
+def reload():
+    create_content()
+    return CONTENT_CACHE
+
 app.run(host='0.0.0.0', port=5000)
